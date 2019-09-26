@@ -80,8 +80,19 @@ College InputGradeData(string filename)
 }
 
 // TODO: define your own functions
-//
-//
+
+void printSummary(College college){
+    cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **\n";
+    cout << "# of courses taught: " << college.NumCourses() << "\n";
+    cout << "# of students taught: " << college.NumStudents() << "\n";
+
+    GradeStats gs=GetGradeDistribution(college);
+    cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << "\n";
+
+    int dfw;
+    int n;
+    cout << "DFW rate: " << GetDFWRate(college,dfw,n) << "%\n";
+}
 
 int main()
 {
@@ -98,8 +109,8 @@ int main()
 
     College college = InputGradeData(filename);
 
-    // 2. TODO: print out summary of the college
-    // DEFINE your own functions
+    // 2. print out summary of the college
+    printSummary(college);
 
     //
     // 3. TODO: Start executing commands from the user:
