@@ -12,6 +12,11 @@ using namespace std;
 // includes for gradeutil
 #include "gradeutil.h"
 
+void printCourse(const Course& course);
+void printCourses(vector<Course> courses);
+Dept GetDeptFromCollege(const College& college,string deptName);
+void search(const College& college);
+
 College InputGradeData(string filename)
 {
     College college;
@@ -185,13 +190,15 @@ void search(const College& college){
         if (dept == "all"){  // instructor from college
             courses = FindCourses(college,instructorPrefix);
         }else{ // instructor from specific department
-            courses = FindCourses(dept,instructorPrefix);
+            Dept department = GetDeptFromCollege(college,dept);
+            courses = FindCourses(department,instructorPrefix);
         }
     }else{ // conversion worked, courseNum contains numeric value
         if (dept == "all"){ // course from college
             courses = FindCourses(college,courseNum);
         }else{ // course from specific department
-            courses = FindCourses(dept,courseNum);
+            Dept department = GetDeptFromCollege(college,dept);
+            courses = FindCourses(department,courseNum);
         }
     }
     
