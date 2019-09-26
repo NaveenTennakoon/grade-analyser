@@ -155,7 +155,7 @@ void executeUserCommands(const College& college){
             printSummaryResult(college);
 
         }else if(command == "search"){
-            // TODO: create function search
+            search(college);
         
         }else if(command == "satisfactory"){
             // TODO: create function printCoursesSatisfacory
@@ -178,7 +178,7 @@ void executeUserCommands(const College& college){
     }
 }
 
-void search(){
+void search(const College& college){
     cout << "dept name, or all? ";
 
     string dept;
@@ -192,18 +192,22 @@ void search(){
     stringstream ss(instructorPrefix); // create stringstream object
     ss >> courseNum; // try to convert input to a course #:
     
+    vector<Course> courses;
     if ( ss.fail() ){ // conversion failed, input is not numeric
-
+        if (dept == "all"){  // instructor from college
+            courses = FindCourses(college,instructorPrefix);
+        }else{ // instructor from specific department
+            courses = FindCourses(dept,instructorPrefix);
+        }
     }else{ // conversion worked, courseNum contains numeric value
-
+        if (dept == "all"){ // course from college
+            courses = FindCourses(college,courseNum);
+        }else{ // course from specific department
+            courses = FindCourses(dept,courseNum);
+        }
     }
     
-
-    if (dept == "all"){
-        
-    }else{
-
-    }
+    printCourses(courses);
 }
 
 /**
@@ -236,7 +240,8 @@ void printCourses(vector<Course> courses){
 /**
  * Find Department object from collage 
  * 
- * @param Collage object and department name
+ * @param college An initialized instance of College
+ * @param deptName name of the department you want
  */
 Dept GetDeptFromCollege(const College& college,string deptName){
     for(const Dept& dept : college.Depts)
