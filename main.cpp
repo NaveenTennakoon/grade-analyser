@@ -137,6 +137,61 @@ void executeUserCommands(const College& college){
     }
 }
 
+void search(){
+    cout << "dept name, or all? ";
+
+    string dept;
+    cin >> dept;
+
+    string instructorPrefix;
+    int courseNum;
+    cout << "course # or instructor prefix? ";
+    cin >> instructorPrefix;
+    
+    stringstream ss(instructorPrefix); // create stringstream object
+    ss >> courseNum; // try to convert input to a course #:
+    
+    if ( ss.fail() ){ // conversion failed, input is not numeric
+
+    }else{ // conversion worked, courseNum contains numeric value
+
+    }
+    
+
+    if (dept == "all"){
+        
+    }else{
+
+    }
+}
+
+/**
+ * Prints the details of the course given.
+ * 
+ * @param course An initialised course object
+ */
+void printCourse(const Course& course){
+    cout << course.Title << endl;
+    cout << " # students: " << course.getNumStudents() << endl;
+    cout << " course type: " << course.getGradingType << endl;
+    cout << " grade distribution (A-F): " << course.NumA << " " << course.NumB << " " << course.NumC << " " << course.NumD << " " << course.NumF << "\n";
+
+    int dfw;
+    int n;
+    cout << "DFW rate: " << GetDFWRate(course,dfw,n) << "%" << endl;
+}
+
+/**
+ * Prints the details of the courses given in the vector
+ * 
+ * @param courses A vector consisting of course objects
+ */
+void printCourses(vector<Course> courses){
+    for(const Course& course : courses){
+        printCourse(course);
+    }
+}
+
 int main()
 {
     string filename;
