@@ -228,7 +228,8 @@ void printCourses(vector<Course> courses){
 /**
  * Find Department object from collage 
  * 
- * @param Collage object and department name
+ * @param college An initialized instance of College
+ * @param deptName name of the department you want
  */
 Dept GetDeptFromCollege(const College& college,string deptName){
     for(const Dept& dept : college.Depts)
