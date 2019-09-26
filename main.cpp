@@ -19,6 +19,7 @@ void search(const College& college);
 void printCoursesSatisfacory(const College& college);
 vector<Course> FindCourses(const College& college, Course::GradingType grading);
 vector<Course> FindCourses(const Dept& dept, Course::GradingType grading);
+void printCoursesWithoutStats(vector<Course> courses);
 
 College InputGradeData(string filename)
 {
@@ -237,6 +238,10 @@ void search(const College& college){
     printCourses(courses);
 }
 
+/**
+ * Finds and prints the courses with grading satisfactory
+ * and prints them in ascending order by course number.
+ */
 void printCoursesSatisfacory(const College& college){
     cout << "dept name, or all? ";
 
@@ -250,7 +255,7 @@ void printCoursesSatisfacory(const College& college){
         Dept department = GetDeptFromCollege(college,dept);
         courses=FindCourses(department,Course::GradingType::Satisfactory);
     }
-    printCourses(courses);
+    printCoursesWithoutStats(courses);
 }
 
 /**
@@ -281,6 +286,21 @@ void printCourse(const Course& course){
 void printCourses(vector<Course> courses){
     for(const Course& course : courses){
         printCourse(course);
+    }
+}
+
+/**
+ * Prints the details of the course given without any grading stats
+ * 
+ * @param course An initialised course object
+ */
+void printCoursesWithoutStats(vector<Course> courses){
+    for(const Course& course : courses){
+        cout << course.Dept << " " << course.Number << " (section " << course.Section << "): " << course.Instructor << endl;
+        cout << " # students: " << course.getNumStudents() << endl;
+        string grading[] = {"letter", "satisfactory", "unknown"};
+
+        cout << " course type: " << grading[course.getGradingType()] << endl;
     }
 }
 
@@ -402,6 +422,8 @@ vector<Course> FindCourses(const College& college, Course::GradingType grading){
   
   return courses;
 }
+
+
 
 
 
