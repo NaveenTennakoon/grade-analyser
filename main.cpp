@@ -16,6 +16,9 @@ void printCourse(const Course& course);
 void printCourses(vector<Course> courses);
 Dept GetDeptFromCollege(const College& college,string deptName);
 void search(const College& college);
+void printCoursesSatisfacory(const College& college);
+vector<Course> FindCourses(const College& college, Course::GradingType grading);
+vector<Course> FindCourses(const Dept& dept, Course::GradingType grading);
 
 College InputGradeData(string filename)
 {
@@ -150,7 +153,7 @@ void executeUserCommands(const College& college){
             search(college);
         
         }else if(command == "satisfactory"){
-            // TODO: create function printCoursesSatisfacory
+            printCoursesSatisfacory(college);
         
         }else if(command == "dfw"){
             // TODO: create function printCoursesWithDFW
@@ -170,6 +173,12 @@ void executeUserCommands(const College& college){
     }
 }
 
+/**
+ * Executes the search command given by user. Takes command line inputs
+ * from user relevant to the search and prints the results
+ * 
+ * @param college Initialized college object
+ */
 void search(const College& college){
     cout << "dept name, or all? ";
 
@@ -201,6 +210,22 @@ void search(const College& college){
         }
     }
     
+    printCourses(courses);
+}
+
+void printCoursesSatisfacory(const College& college){
+    cout << "dept name, or all? ";
+
+    string dept;
+    cin >> dept;
+
+    vector<Course> courses;
+    if (dept == "all"){
+        courses=FindCourses(college,Course::GradingType::Satisfactory);
+    }else{
+        Dept department = GetDeptFromCollege(college,dept);
+        courses=FindCourses(department,Course::GradingType::Satisfactory);
+    }
     printCourses(courses);
 }
 
@@ -238,8 +263,8 @@ void printCourses(vector<Course> courses){
 /**
  * Find Department object from collage 
  * 
- * @param college An initialized instance of College
- * @param deptName name of the department you want
+ * @param college   An initialized instance of College
+ * @param deptName  name of the department you want
  */
 Dept GetDeptFromCollege(const College& college,string deptName){
     for(const Dept& dept : college.Depts)
@@ -251,6 +276,111 @@ Dept GetDeptFromCollege(const College& college,string deptName){
     }
     return Dept();
 }
+
+/**
+ * Searches all the courses in the department that matches that has the grading type
+ * 
+ * @param dept      Reference to the Dept that should be searched.
+ * @param grading   Grading type of the course
+ * @return          If none are found, then the returned vector is empty.  If
+ *                  one or more courses are found, copies of the course objects
+ *                  are returned in a vector, with the courses appearing in 
+ *                  ascending order by course number.  If two courses have the 
+ *                  same course number, they are given in ascending order by 
+ *                  section number.  Note that courses are NOT sorted by 
+ *                  instructor name.
+ */
+vector<Course> FindCourses(const Dept& dept, Course::GradingType grading){
+  vector<Course>  courses;
+  
+  //
+  // looking for 1 or more courses that match the grading:
+  //
+  for(const Course& course : dept.Courses)
+  {
+    if (course.getGradingType() == grading)  // match:
+    {
+      courses.push_back(course);
+    }
+  }
+  
+  //
+  // sort the vector, first by course number then by section number:
+  //
+  if (courses.size() > 1)  // not required, just a tiny optimization:
+  {
+    sort(courses.begin(), courses.end(), 
+      [](const Course& c1, const Course& c2)
+      {
+		return (c1.Section < c2.Section);
+      }
+    );
+  }
+  
+  return courses;
+}
+
+/**
+ * Searches all the courses in the department that matches that has the grading type
+ * 
+ * @param college   Reference to the College that should be searched.
+ * @param grading   Grading type of the course
+ * @return          If none are found, then the returned vector is empty.  If
+ *                  one or more courses are found, copies of the course objects
+ *                  are returned in a vector, with the courses appearing in 
+ *                  ascending order by course number.  If two courses have the 
+ *                  same course number, they are given in ascending order by 
+ *                  section number.  Note that courses are NOT sorted by 
+ *                  instructor name.
+ */
+vector<Course> FindCourses(const College& college, Course::GradingType grading){
+    vector<Course>  courses;
+    cout << "college" << grading << endl;
+  //
+  // For each college, search for courses that match and collect them all
+  // in a single vector:
+  //
+  for(const Dept& dept : college.Depts)
+  {
+    vector<Course> onedept = FindCourses(dept, grading);
+    
+    for(const Course& c : onedept)
+    {
+      courses.push_back(c);
+    }
+  }
+  
+  //
+  // now sort the courses (if any) by dept, course #, and section #:
+  //
+  if (courses.size() > 1)  // not required, just a tiny optimization:
+  {
+    sort(courses.begin(), courses.end(), 
+      [](const Course& c1, const Course& c2)
+      {
+        if (c1.Dept < c2.Dept)
+          return true;
+        else if (c1.Dept > c2.Dept)
+          return false;
+        else // same dept, look at course #:
+          if (c1.Number < c2.Number)
+            return true;
+          else if (c1.Number > c2.Number)
+            return false;
+          else // same course #, look at section #:
+            if (c1.Section < c2.Section)
+              return true;
+            else 
+              return false;
+      }
+    );
+  }
+  
+  return courses;
+}
+
+
+
 
 int main()
 {
