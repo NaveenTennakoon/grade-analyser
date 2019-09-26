@@ -12,10 +12,10 @@ using namespace std;
 // includes for gradeutil
 #include "gradeutil.h"
 
-Dept GetDeptFromCollege(const College& college,string deptName);
-void search(const College& college);
 void printCourse(const Course& course);
 void printCourses(vector<Course> courses);
+Dept GetDeptFromCollege(const College& college,string deptName);
+void search(const College& college);
 
 College InputGradeData(string filename)
 {
@@ -97,7 +97,7 @@ void printCollegeSummary(const College& college){
     cout << "# of students taught: " << college.NumStudents() << "\n";
 
     GradeStats gs=GetGradeDistribution(college);
-    cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << "\n";
+    cout << "grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
@@ -150,7 +150,6 @@ void printSummaryResult(const College& college)
 
     }
     
-     
     
 }
 
@@ -214,13 +213,15 @@ void search(const College& college){
         if (dept == "all"){  // instructor from college
             courses = FindCourses(college,instructorPrefix);
         }else{ // instructor from specific department
-            courses = FindCourses(dept,instructorPrefix);
+            Dept department = GetDeptFromCollege(college,dept);
+            courses = FindCourses(department,instructorPrefix);
         }
     }else{ // conversion worked, courseNum contains numeric value
         if (dept == "all"){ // course from college
             courses = FindCourses(college,courseNum);
         }else{ // course from specific department
-            courses = FindCourses(dept,courseNum);
+            Dept department = GetDeptFromCollege(college,dept);
+            courses = FindCourses(department,courseNum);
         }
     }
     
@@ -233,10 +234,14 @@ void search(const College& college){
  * @param course An initialised course object
  */
 void printCourse(const Course& course){
-    cout << course.Title << endl;
+    cout << course.Dept << " " << course.Number << " (section " << course.Section << "): " << course.Instructor << endl;
     cout << " # students: " << course.getNumStudents() << endl;
-    cout << " course type: " << course.getGradingType() << endl;
-    cout << " grade distribution (A-F): " << course.NumA << " " << course.NumB << " " << course.NumC << " " << course.NumD << " " << course.NumF << "\n";
+    string grading[] = {"letter", "satisfactory", "unknown"};
+
+    cout << " course type: " << grading[course.getGradingType()] << endl;
+
+    GradeStats gs=GetGradeDistribution(course);
+    cout << "grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
@@ -268,6 +273,7 @@ Dept GetDeptFromCollege(const College& college,string deptName){
             return dept;
         }
     }
+    return Dept();
 }
 
 int main()
