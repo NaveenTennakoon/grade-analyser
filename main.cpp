@@ -114,7 +114,7 @@ void executeUserCommands(const College& college){
             // TODO: create function printDeptSummary
 
         }else if(command == "search"){
-            // TODO: create function search
+            search(college);
         
         }else if(command == "satisfactory"){
             // TODO: create function printCoursesSatisfacory
@@ -137,7 +137,7 @@ void executeUserCommands(const College& college){
     }
 }
 
-void search(){
+void search(const College& college){
     cout << "dept name, or all? ";
 
     string dept;
@@ -151,18 +151,22 @@ void search(){
     stringstream ss(instructorPrefix); // create stringstream object
     ss >> courseNum; // try to convert input to a course #:
     
+    vector<Course> courses;
     if ( ss.fail() ){ // conversion failed, input is not numeric
-
+        if (dept == "all"){  // instructor from college
+            courses = FindCourses(college,instructorPrefix);
+        }else{ // instructor from specific department
+            courses = FindCourses(dept,instructorPrefix);
+        }
     }else{ // conversion worked, courseNum contains numeric value
-
+        if (dept == "all"){ // course from college
+            courses = FindCourses(college,courseNum);
+        }else{ // course from specific department
+            courses = FindCourses(dept,courseNum);
+        }
     }
     
-
-    if (dept == "all"){
-        
-    }else{
-
-    }
+    printCourses(courses);
 }
 
 /**
