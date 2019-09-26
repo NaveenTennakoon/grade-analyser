@@ -99,6 +99,27 @@ void printCollegeSummary(const College& college){
     cout << "DFW rate: " << GetDFWRate(college,dfw,n) << "%\n";
 }
 
+
+/**
+ * Allows user to enter commands to be processed. Prints the search result of the college or department
+ * 
+ * @param college Initialized college object
+ */
+
+void printSummaryResult(const College& college)
+{
+    string command;
+    cout<< "dept name, or all?";
+    cin >> command;
+
+    cout<< command << ":" <<endl;
+    cout << "# of courses taught: " << college.NumCourses() << "\n";
+    cout << "# of students taught: " << college.NumStudents() << "\n";   
+    
+}
+
+
+
 /**
  * Allows user to enter commands to be processed. These commands are then
  * directed to their respective methods to process and print the output.
@@ -112,6 +133,7 @@ void executeUserCommands(const College& college){
         cin >> command;
         if (command == "summary"){
             // TODO: create function printDeptSummary
+            printSummaryResult(college);
 
         }else if(command == "search"){
             // TODO: create function search
@@ -136,6 +158,8 @@ void executeUserCommands(const College& college){
 
     }
 }
+
+
 
 int main()
 {
