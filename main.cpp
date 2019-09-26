@@ -122,11 +122,35 @@ void printSummaryResult(const College& college)
 
     if (command == "all")
     {
-        
+        vector<Dept> dt = college.Depts;
+        sort(dt.begin(), dt.end(), [](const Dept& d1, const Dept& d2){ return d1.Name < d2.Name;}); // sort dept object using dept names
+        for(const Dept& dept : dt)
+        {
+            cout<< dept.Name << ":" <<endl;
+            cout << "# of courses taught: " << dept.NumCourses() << endl;
+            cout << "# of students taught: " << dept.NumStudents() << endl;
+
+            GradeStats gs=GetGradeDistribution(dept);
+            cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+
+            int dfw;
+            int n;
+            cout << "DFW rate: " << GetDFWRate(dept,dfw,n) << "%"<< endl;
+        }
     }else
     {
         cout<< command << ":" <<endl;
-        
+        Dept dt = GetDeptFromCollege(college,command);
+        cout << "# of courses taught: " << dt.NumCourses() << endl;
+        cout << "# of students taught: " << dt.NumStudents() << endl;
+
+        GradeStats gs=GetGradeDistribution(dt);
+        cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+
+        int dfw;
+        int n;
+        cout << "DFW rate: " << GetDFWRate(dt,dfw,n) << "%"<< endl;
+
     }
     
     
