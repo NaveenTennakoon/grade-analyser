@@ -12,6 +12,8 @@ using namespace std;
 // includes for gradeutil
 #include "gradeutil.h"
 
+Dept GetDeptFromCollege(const College& college,string deptName);
+
 College InputGradeData(string filename)
 {
     College college;
@@ -118,7 +120,17 @@ void printSummaryResult(const College& college)
     }else
     {
         cout<< command << ":" <<endl;
-        
+        Dept dt = GetDeptFromCollege(college,command);
+        cout << "# of courses taught: " << dt.NumCourses() << endl;
+        cout << "# of students taught: " << dt.NumStudents() << endl;
+
+        GradeStats gs=GetGradeDistribution(dt);
+        cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+
+        int dfw;
+        int n;
+        cout << "DFW rate: " << GetDFWRate(dt,dfw,n) << "%"<< endl;
+
     }
     
      
