@@ -81,7 +81,12 @@ College InputGradeData(string filename)
 
 // TODO: define your own functions
 
-void printSummary(College college){
+/**
+ * Prints the summary of the college
+ * 
+ * @param college Initialized college object
+ */
+void printSummary(const College& college){
     cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **\n";
     cout << "# of courses taught: " << college.NumCourses() << "\n";
     cout << "# of students taught: " << college.NumStudents() << "\n";
@@ -92,6 +97,15 @@ void printSummary(College college){
     int dfw;
     int n;
     cout << "DFW rate: " << GetDFWRate(college,dfw,n) << "%\n";
+}
+
+/**
+ * Prints the summary of the college
+ * 
+ * @param college Initialized college object
+ */
+void executeUserCommands(const College& college){
+    
 }
 
 int main()
@@ -113,8 +127,8 @@ int main()
     printSummary(college);
 
     //
-    // 3. TODO: Start executing commands from the user:
-    // DEFINE your own functions
+    // 3. Start executing commands from the user:
+    executeUserCommands(college);
     
 
     //
