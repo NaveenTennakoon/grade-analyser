@@ -86,7 +86,7 @@ College InputGradeData(string filename)
  * 
  * @param college Initialized college object
  */
-void printSummary(const College& college){
+void printCollegeSummary(const College& college){
     cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **\n";
     cout << "# of courses taught: " << college.NumCourses() << "\n";
     cout << "# of students taught: " << college.NumStudents() << "\n";
@@ -100,12 +100,41 @@ void printSummary(const College& college){
 }
 
 /**
- * Prints the summary of the college
+ * Allows user to enter commands to be processed. These commands are then
+ * directed to their respective methods to process and print the output.
  * 
  * @param college Initialized college object
  */
 void executeUserCommands(const College& college){
-    
+    while(true){
+        string command;
+        cout << "Enter a command> ";
+        cin >> command;
+        if (command == "summary"){
+            // TODO: create function printDeptSummary
+
+        }else if(command == "search"){
+            // TODO: create function search
+        
+        }else if(command == "satisfactory"){
+            // TODO: create function printCoursesSatisfacory
+        
+        }else if(command == "dfw"){
+            // TODO: create function printCoursesWithDFW
+        
+        }else if(command == "letterB"){
+            // TODO: create function printCoursesWithB
+        
+        }else if(command == "average"){
+            // TODO: create function printDeptAverage
+        
+        }else if(command == "#"){
+            cout << "Exiting\n";
+            return;
+        }else 
+            cout << "**unknown command\n";
+
+    }
 }
 
 int main()
@@ -124,7 +153,7 @@ int main()
     College college = InputGradeData(filename);
 
     // 2. print out summary of the college
-    printSummary(college);
+    printCollegeSummary(college);
 
     //
     // 3. Start executing commands from the user:
