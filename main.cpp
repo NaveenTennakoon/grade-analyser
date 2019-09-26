@@ -112,9 +112,16 @@ void printSummaryResult(const College& college)
     cout<< "dept name, or all?";
     cin >> command;
 
-    cout<< command << ":" <<endl;
-    cout << "# of courses taught: " << college.NumCourses() << "\n";
-    cout << "# of students taught: " << college.NumStudents() << "\n";   
+    if (command == "all")
+    {
+        
+    }else
+    {
+        cout<< command << ":" <<endl;
+        
+    }
+    
+     
     
 }
 
@@ -195,7 +202,7 @@ void search(){
 void printCourse(const Course& course){
     cout << course.Title << endl;
     cout << " # students: " << course.getNumStudents() << endl;
-    cout << " course type: " << course.getGradingType << endl;
+    cout << " course type: " << course.getGradingType() << endl;
     cout << " grade distribution (A-F): " << course.NumA << " " << course.NumB << " " << course.NumC << " " << course.NumD << " " << course.NumF << "\n";
 
     int dfw;
@@ -211,6 +218,21 @@ void printCourse(const Course& course){
 void printCourses(vector<Course> courses){
     for(const Course& course : courses){
         printCourse(course);
+    }
+}
+
+/**
+ * Find Department object from collage 
+ * 
+ * @param Collage object and department name
+ */
+Dept GetDeptFromCollege(const College& college,string deptName){
+    for(const Dept& dept : college.Depts)
+    {
+        if (dept.Name == deptName)  // match:
+        {
+            return dept;
+        }
     }
 }
 
