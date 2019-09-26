@@ -99,6 +99,34 @@ void printCollegeSummary(const College& college){
     cout << "DFW rate: " << GetDFWRate(college,dfw,n) << "%\n";
 }
 
+
+/**
+ * Allows user to enter commands to be processed. Prints the search result of the college or department
+ * 
+ * @param college Initialized college object
+ */
+
+void printSummaryResult(const College& college)
+{
+    string command;
+    cout<< "dept name, or all?";
+    cin >> command;
+
+    if (command == "all")
+    {
+        
+    }else
+    {
+        cout<< command << ":" <<endl;
+        
+    }
+    
+     
+    
+}
+
+
+
 /**
  * Allows user to enter commands to be processed. These commands are then
  * directed to their respective methods to process and print the output.
@@ -112,6 +140,7 @@ void executeUserCommands(const College& college){
         cin >> command;
         if (command == "summary"){
             // TODO: create function printDeptSummary
+            printSummaryResult(college);
 
         }else if(command == "search"){
             search(college);
@@ -177,7 +206,7 @@ void search(const College& college){
 void printCourse(const Course& course){
     cout << course.Title << endl;
     cout << " # students: " << course.getNumStudents() << endl;
-    cout << " course type: " << course.getGradingType << endl;
+    cout << " course type: " << course.getGradingType() << endl;
     cout << " grade distribution (A-F): " << course.NumA << " " << course.NumB << " " << course.NumC << " " << course.NumD << " " << course.NumF << "\n";
 
     int dfw;
@@ -193,6 +222,21 @@ void printCourse(const Course& course){
 void printCourses(vector<Course> courses){
     for(const Course& course : courses){
         printCourse(course);
+    }
+}
+
+/**
+ * Find Department object from collage 
+ * 
+ * @param Collage object and department name
+ */
+Dept GetDeptFromCollege(const College& college,string deptName){
+    for(const Dept& dept : college.Depts)
+    {
+        if (dept.Name == deptName)  // match:
+        {
+            return dept;
+        }
     }
 }
 
