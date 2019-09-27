@@ -103,12 +103,12 @@ College InputGradeData(string filename)
  */
 void printCollegeSummary(const College &college)
 {
-    cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **" << endl;
+    cout << "** College of " << college.Name << ", " << college.Semester << " " << college.Year << " **" << endl;
     cout << "# of courses taught: " << college.NumCourses() << endl;
     cout << "# of students taught: " << college.NumStudents() << endl;
 
     GradeStats gs = GetGradeDistribution(college);
-    cout << "grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
+    cout << "grade distribution (A-F): " << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
