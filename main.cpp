@@ -108,7 +108,7 @@ void printCollegeSummary(const College &college)
     cout << "# of students taught: " << college.NumStudents() << endl;
 
     GradeStats gs = GetGradeDistribution(college);
-    cout << "grade distribution (A-F): " << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
+    cout << " grade distribution (A-F):" << gs.PercentA << "%, " << gs.PercentB << "%, " << gs.PercentC << "%, " << gs.PercentD << "%, " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
@@ -138,7 +138,7 @@ void printSummaryResult(const College &college)
             cout << " # of students taught: " << dept.NumStudents() << endl;
 
             GradeStats gs = GetGradeDistribution(dept);
-            cout << " grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+            cout << " grade distribution (A-F):" << gs.PercentA << "%, " << gs.PercentB << "%, " << gs.PercentC << "%, " << gs.PercentD << "%, " << gs.PercentF << "%" << endl;
 
             int dfw;
             int n;
@@ -153,7 +153,7 @@ void printSummaryResult(const College &college)
         cout << " # of students taught: " << dt.NumStudents() << endl;
 
         GradeStats gs = GetGradeDistribution(dt);
-        cout << " grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+        cout << " grade distribution (A-F):" << gs.PercentA << "%, " << gs.PercentB << "%, " << gs.PercentC << "%, " << gs.PercentD << "%, " << gs.PercentF << "%" << endl;
 
         int dfw;
         int n;
@@ -359,7 +359,7 @@ void printCourse(const Course &course)
     cout << " course type: " << grading[course.getGradingType()] << endl;
 
     GradeStats gs = GetGradeDistribution(course);
-    cout << " grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
+    cout << " grade distribution (A-F):" << gs.PercentA << "%, " << gs.PercentB << "%, " << gs.PercentC << "%, " << gs.PercentD << "%, " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
