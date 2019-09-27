@@ -21,8 +21,11 @@ vector<Course> FindCourses(const College &college, Course::GradingType grading);
 vector<Course> FindCourses(const Dept &dept, Course::GradingType grading);
 void printCoursesWithoutStats(vector<Course> courses);
 void printCoursesWithDFW(const College &college);
+void printCoursesWithB(const College &college);
 vector<Course> FindCoursesDFW(const College &college, double threshold);
 vector<Course> FindCoursesDFW(const Dept &dept, double threshold);
+vector<Course> FindCoursesB(const College &college, double threshold);
+vector<Course> FindCoursesB(const Dept &dept, double threshold);
 
 College InputGradeData(string filename)
 {
@@ -100,16 +103,16 @@ College InputGradeData(string filename)
  */
 void printCollegeSummary(const College &college)
 {
-    cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **\n";
-    cout << "# of courses taught: " << college.NumCourses() << "\n";
-    cout << "# of students taught: " << college.NumStudents() << "\n";
+    cout << "** College of " << college.Name << "," << college.Semester << " " << college.Year << " **" << endl;
+    cout << "# of courses taught: " << college.NumCourses() << endl;
+    cout << "# of students taught: " << college.NumStudents() << endl;
 
     GradeStats gs = GetGradeDistribution(college);
     cout << "grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
-    cout << "DFW rate: " << GetDFWRate(college, dfw, n) << "%\n";
+    cout << "DFW rate: " << GetDFWRate(college, dfw, n) << "%" << endl;
 }
 
 /**
@@ -131,30 +134,30 @@ void printSummaryResult(const College &college)
         for (const Dept &dept : dt)
         {
             cout << dept.Name << ":" << endl;
-            cout << "# of courses taught: " << dept.NumCourses() << endl;
-            cout << "# of students taught: " << dept.NumStudents() << endl;
+            cout << " # of courses taught: " << dept.NumCourses() << endl;
+            cout << " # of students taught: " << dept.NumStudents() << endl;
 
             GradeStats gs = GetGradeDistribution(dept);
-            cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+            cout << " grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
 
             int dfw;
             int n;
-            cout << "DFW rate: " << GetDFWRate(dept, dfw, n) << "%" << endl;
+            cout << " DFW rate: " << GetDFWRate(dept, dfw, n) << "%" << endl;
         }
     }
     else
     {
         cout << command << ":" << endl;
         Dept dt = GetDeptFromCollege(college, command);
-        cout << "# of courses taught: " << dt.NumCourses() << endl;
-        cout << "# of students taught: " << dt.NumStudents() << endl;
+        cout << " # of courses taught: " << dt.NumCourses() << endl;
+        cout << " # of students taught: " << dt.NumStudents() << endl;
 
         GradeStats gs = GetGradeDistribution(dt);
-        cout << "grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
+        cout << " grade distribution (A-F):" << gs.PercentA << " " << gs.PercentB << " " << gs.PercentC << " " << gs.PercentD << " " << gs.PercentF << endl;
 
         int dfw;
         int n;
-        cout << "DFW rate: " << GetDFWRate(dt, dfw, n) << "%" << endl;
+        cout << " DFW rate: " << GetDFWRate(dt, dfw, n) << "%" << endl;
     }
 }
 
@@ -190,7 +193,7 @@ void executeUserCommands(const College &college)
         }
         else if (command == "letterB")
         {
-            // TODO: create function printCoursesWithB
+            printCoursesWithB(college);
         }
         else if (command == "average")
         {
@@ -198,11 +201,11 @@ void executeUserCommands(const College &college)
         }
         else if (command == "#")
         {
-            cout << "Exiting\n";
+            // cout << "Exiting\n";
             return;
         }
         else
-            cout << "**unknown command\n";
+            cout << "**unknown command" << endl;
     }
 }
 
@@ -312,6 +315,37 @@ void printCoursesWithDFW(const College &college)
 }
 
 /**
+ * Prints the course with user input B threshold. Sorted
+ * in descending order of B percentage.
+ */
+void printCoursesWithB(const College &college)
+{
+    cout << "dept name, or all? ";
+
+    string dept;
+    cin >> dept;
+
+    double b;
+    cout << "letter B threshold? ";
+    cin >> b;
+
+    vector<Course> courses;
+    if (dept == "all")
+    {
+        courses = FindCoursesB(college, b);
+    }
+    else
+    {
+        Dept department = GetDeptFromCollege(college, dept);
+        courses = FindCoursesB(department, b);
+    }
+
+    //requires sorting
+
+    printCourses(courses);
+}
+
+/**
  * Prints the details of the course given.
  * 
  * @param course An initialised course object
@@ -325,11 +359,11 @@ void printCourse(const Course &course)
     cout << " course type: " << grading[course.getGradingType()] << endl;
 
     GradeStats gs = GetGradeDistribution(course);
-    cout << "grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
+    cout << " grade distribution (A-F):" << gs.PercentA << "% " << gs.PercentB << "% " << gs.PercentC << "% " << gs.PercentD << "% " << gs.PercentF << "%" << endl;
 
     int dfw;
     int n;
-    cout << "DFW rate: " << GetDFWRate(course, dfw, n) << "%" << endl;
+    cout << " DFW rate: " << GetDFWRate(course, dfw, n) << "%" << endl;
 }
 
 /**
@@ -438,7 +472,6 @@ vector<Course> FindCourses(const Dept &dept, Course::GradingType grading)
 vector<Course> FindCourses(const College &college, Course::GradingType grading)
 {
     vector<Course> courses;
-    cout << "college" << grading << endl;
     //
     // For each college, search for courses that match and collect them all
     // in a single vector:
@@ -553,8 +586,8 @@ vector<Course> FindCoursesDFW(const Dept &dept, double threshold)
  * Searches all the courses in the college that has a DFW greater than given
  * threshold
  * 
- * @param college   Reference to the College that should be searched.
- * @param grading   Grading type of the course
+ * @param college       Reference to the College that should be searched.
+ * @param threshold     Minimum threshold required
  * @return              If none are found, then the returned vector is empty.  If
  *                      one or more courses are found, copies of the course objects
  *                      are returned in a vector, with the courses appearing in 
@@ -596,6 +629,138 @@ vector<Course> FindCoursesDFW(const College &college, double threshold)
             if (c1dfw > c2dfw) 
                 return true;
             else if (c1dfw<c2dfw)
+                return false;
+            else // same dfw, look at dept
+                if (c1.Dept < c2.Dept)
+                    return true;
+                else if (c1.Dept > c2.Dept)
+                    return false;
+                else // same dept, look at course #:
+                    if (c1.Number < c2.Number)
+                        return true;
+                    else if (c1.Number > c2.Number)
+                        return false;
+                    else // same course #, look at section #:
+                        if (c1.Section < c2.Section)
+                            return true;
+                        else
+                            return false;
+        });
+    }
+
+    return courses;
+}
+
+/**
+ * Searches all the courses in the department that has a B Percentile than given
+ * threshold
+ * 
+ * @param college       Reference to the College that should be searched.
+ * @param threshold     Minimum threshold required
+ * @return              If none are found, then the returned vector is empty.  If
+ *                      one or more courses are found, copies of the course objects
+ *                      are returned in a vector, with the courses appearing in 
+ *                      decesending order by B perecentage. If two courses have same 
+ *                      percentage then they are sorted ascending order of department.
+ *                      If two courses have the same department number. Then sorted 
+ *                      by course number. If the have the same course number, they 
+ *                      are given in ascending order by section number.Note that 
+ *                      courses are NOT sorted by instructor name.
+ */
+vector<Course> FindCoursesB(const Dept &dept, double threshold)
+{
+    vector<Course> courses;
+
+    //
+    // looking for 1 or more courses that match has the threshold:
+    //
+    for (const Course &course : dept.Courses)
+    {
+        GradeStats gs = GetGradeDistribution(course);
+        if (gs.PercentB >= threshold)
+        {
+            courses.push_back(course);
+        }
+    }
+
+    //
+    // sort the vector, first by dfw then by course number then by section number:
+    //
+    if (courses.size() > 1) // not required, just a tiny optimization:
+    {
+        sort(courses.begin(), courses.end(), [](const Course &c1, const Course &c2) {
+            double c1b = GetGradeDistribution(c1).PercentB;
+            double c2b = GetGradeDistribution(c2).PercentB;
+            if (c1b > c2b) 
+                return true;
+            else if (c1b < c2b)
+                return false;
+            else // same dfw, look at dept
+                if (c1.Dept < c2.Dept)
+                    return true;
+                else if (c1.Dept > c2.Dept)
+                    return false;
+                else // same dept, look at course #:
+                    if (c1.Number < c2.Number)
+                        return true;
+                    else if (c1.Number > c2.Number)
+                        return false;
+                    else // same course #, look at section #:
+                        if (c1.Section < c2.Section)
+                            return true;
+                        else
+                            return false;
+        });
+    }
+
+    return courses;
+}
+
+/**
+ * Searches all the courses in the college that has a B Percentile than given
+ * threshold
+ * 
+ * @param college       Reference to the College that should be searched.
+ * @param threshold     Minimum threshold required
+ * @return              If none are found, then the returned vector is empty.  If
+ *                      one or more courses are found, copies of the course objects
+ *                      are returned in a vector, with the courses appearing in 
+ *                      decesending order by B perecentage. If two courses have same 
+ *                      percentage then they are sorted ascending order of department.
+ *                      If two courses have the same department number. Then sorted 
+ *                      by course number. If the have the same course number, they 
+ *                      are given in ascending order by section number.Note that 
+ *                      courses are NOT sorted by instructor name.
+ */
+vector<Course> FindCoursesB(const College &college, double threshold)
+{
+    vector<Course> courses;
+
+    //
+    // For each college, search for courses that match and collect them all
+    // in a single vector:
+    //
+    for (const Dept &dept : college.Depts)
+    {
+        vector<Course> onedept = FindCoursesB(dept, threshold);
+
+        for (const Course &c : onedept)
+        {
+            courses.push_back(c);
+        }
+    }
+
+    //
+    // sort the vector, first by dfw then by course number then by section number
+    //
+    if (courses.size() > 1) // not required, just a tiny optimization:
+    {
+        sort(courses.begin(), courses.end(), [](const Course &c1, const Course &c2) {
+            double c1b = GetGradeDistribution(c1).PercentB;
+            double c2b = GetGradeDistribution(c2).PercentB;
+            if (c1b > c2b) 
+                return true;
+            else if (c1b < c2b)
                 return false;
             else // same dfw, look at dept
                 if (c1.Dept < c2.Dept)
