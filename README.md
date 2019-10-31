@@ -1,2 +1,2 @@
 # grade-analyser
-analyse and calculate students data and grading
+analyze students data and grading
